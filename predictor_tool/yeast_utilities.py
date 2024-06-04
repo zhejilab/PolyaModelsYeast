@@ -44,16 +44,16 @@ def extract_sequence(genome, chrom, start, end, strand):
 
 
 def get_window(genome, chrom_sizes, chrom, position, strand):
-	'''Fetches 240 nt genomic sequence surrounding the indicated position.
+	'''Fetches 500 nt genomic sequence surrounding the indicated position.
 	'''
 
-	start = int(position - 120)
-	end = int(position + 120)
+	start = int(position - 250)
+	end = int(position + 250)
 
 	if (start <= 0) | (end >= chrom_sizes[chrom]):
 		raise ValueError(f'Requested input with interval at ({chrom}:{start}-{end}:{strand}) exceeds the chromosome edges.')
 
-	## if on the reverse strand, shift the coordinates one to put the position of interest at the 120th index in the sequence
+	## if on the reverse strand, shift the coordinates one to put the position of interest at the 250th index in the sequence
 
 	if (strand == '-'):
 		start += 1
@@ -90,8 +90,8 @@ def generate_data(sequences):
 						'source_type' : 'dataframe',
 						'source'      : 'df',
 						'extractor'   : lambda row,index: row['Sequence'].upper(),
-						'encoder'     : iso.OneHotEncoder(seq_length = 240),
-						'dim'         : (240,4),
+						'encoder'     : iso.OneHotEncoder(seq_length = 500),
+						'dim'         : (500,4),
 						'sparsify'    : False,
 					},
 				],
