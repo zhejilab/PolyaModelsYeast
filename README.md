@@ -27,8 +27,8 @@ PolyaClassifier, PolyaCleavage, and PolyaStrength can be used to make new predic
 **predictor_tool/yeast_utilities.py**
 > This file contains the helper functions used by the predictor tool. For example, functions to extract the genomic sequence if needed, build and reload the PolyaModels, and flow batches of data into the models for predictions are here.
 
-**predictor_tool/S_cerevisiae.PolyaClassifier.h5**
-> The trained model weights for the *S. cerevisiae*-specific PolyaClassifier model.
+**predictor_tool/S_cerevisiae.PolyaClassifier.model_\*.h5**
+> The trained model weights for the three constituent *S. cerevisiae*-specific PolyaClassifier model. These are combined using bagging to create the final ensemble model.
 
 **predictor_tool/S_cerevisiae.PolyaCleavage.h5**
 > The trained model weights for the *S. cerevisiae*-specific PolyaCleavage model.
@@ -36,38 +36,40 @@ PolyaClassifier, PolyaCleavage, and PolyaStrength can be used to make new predic
 **predictor_tool/S_cerevisiae.PolyaStrength.h5**
 > The trained model weights for the *S. cerevisiae*-specific PolyaStrength model.
 
-**predictor_tool/S_pombe.PolyaClassifier.h5**
-> The trained model weights for the *S. pombe*-specific PolyaClassifier model.
+**predictor_tool/S_pombe.PolyaClassifier.model_\*.h5**
+> The trained model weights for the three constituent *S. pombe*-specific PolyaClassifier models. These are combined using bagging to create the final ensemble model.
 
 
 ### Example prediction from sequence
 
 ```sh
-python yeast_prediction.py from_sequence -m 'S.cer PolyaClassifier' -s 'CGTGTGTTTTTGTTCTCTTATAACCGAGCTGCTTACTTATTATTATTTCACCTTCTCTTTTTATTTATACTTATAATTATTTATTCTTTACATACTGTTACAAGAAACTCTTTTCTACATTAATTGCATAAAGTGTCAATCAGCACATCCTCTACATCGCTATCAACAACAAATTTGACAAACCTGCCTATATCTTCAGGAACGACTGCTGCATCGCTACCACCACTACTTGTGAAGTCC'
+python yeast_prediction.py from_sequence -m 'S.cer PolyaClassifier' -s 'TCAGCGTGCACAATGAAGAGATCCTGCAATTACTCGCATCGTGCATCGAAACAACGAGGAATAAATAAACCATAAAATTTAACTGTAGTCGCAATAAAAGATGAAAAGCTAACACAATTATCATAGGACACTGTAATCCAGACTTTAATTAGTATTAAGTATTGAGTACAAAGTACAAAGTATTATACTAACGGTAGTTTGGGCTCTTCGATTACCCATACACTTTTAATGGACTAATTTCATCAAGTTTCATTCGAAAATTTTCTTAAAATATATATATGCGTAGTGGTATAGTATTCATATTTCATGAACTTATTTCATAAAAAAAGATAAAGCAAACCTAATATTTGGATCGGCGCTCGAAATTATTCTCAGTATTCTTCAGCATTAGACATCTTTAACATATCAATCTTTAAAAGGTTTCTTCTTCTTCTGTAGCTCGGAATATAAGCATTCATATATGACCATGTTGTAACGCGATCGAACCAAGCAACTTCTTC' --verbose
 ```
 
 This will give the following output: 
 
 ```
-Sequence: CGTGTGTTTTTGTTCTCTTATAACCGAGCTGCTTACTTATTATTATTTCACCTTCTCTTTTTATTTATACTTATAATTATTTATTCTTTACATACTGTTACAAGAAACTCTTTTCTACATTAATTGCATAAAGTGTCAATCAGCACATCCTCTACATCGCTATCAACAACAAATTTGACAAACCTGCCTATATCTTCAGGAACGACTGCTGCATCGCTACCACCACTACTTGTGAAGTCC
-PolyaClassifier probability: 0.999801
+Making predictions using S.cer PolyaClassifier:
+Sequence: TCAGCGTGCACAATGAAGAGATCCTGCAATTACTCGCATCGTGCATCGAAACAACGAGGAATAAATAAACCATAAAATTTAACTGTAGTCGCAATAAAAGATGAAAAGCTAACACAATTATCATAGGACACTGTAATCCAGACTTTAATTAGTATTAAGTATTGAGTACAAAGTACAAAGTATTATACTAACGGTAGTTTGGGCTCTTCGATTACCCATACACTTTTAATGGACTAATTTCATCAAGTTTCATTCGAAAATTTTCTTAAAATATATATATGCGTAGTGGTATAGTATTCATATTTCATGAACTTATTTCATAAAAAAAGATAAAGCAAACCTAATATTTGGATCGGCGCTCGAAATTATTCTCAGTATTCTTCAGCATTAGACATCTTTAACATATCAATCTTTAAAAGGTTTCTTCTTCTTCTGTAGCTCGGAATATAAGCATTCATATATGACCATGTTGTAACGCGATCGAACCAAGCAACTTCTTC
+PolyaClassifier probability: 0.985849
 ```
 
-A genomic location with this sequence is expected to be a polyA cleavage site with a classification probability >0.999 from PolyaClassifier.
+A genomic location with this sequence is expected to be a polyA cleavage site with a classification probability >0.98 from PolyaClassifier.
 
 ### Example prediction from genomic location
 
 **Note:** Predictions can be made from genomic locations but the genome FASTA and chrom.sizes files need to be provided by the user.
 
 ```sh
-python yeast_prediction.py from_position -m 'S.cer PolyaClassifier' -p 'I:42717:-' -g './genome.fa' -c './chrom.sizes' 
+python yeast_prediction.py from_position -m 'S.cer PolyaClassifier' -p 'I:42717:-' -g './genome.fa' -c './chrom.sizes' --verbose
 ```
 
 This will give the following output:
 
 ```
-Sequence: CGTGTGTTTTTGTTCTCTTATAACCGAGCTGCTTACTTATTATTATTTCACCTTCTCTTTTTATTTATACTTATAATTATTTATTCTTTACATACTGTTACAAGAAACTCTTTTCTACATTAATTGCATAAAGTGTCAATCAGCACATCCTCTACATCGCTATCAACAACAAATTTGACAAACCTGCCTATATCTTCAGGAACGACTGCTGCATCGCTACCACCACTACTTGTGAAGTCC
-PolyaClassifier probability: 0.999801
+Making predictions using S.cer PolyaClassifier:
+Sequence: AGCAGGAGAAAGTGACCAACTAGGCGACGTTTCTACATTGTCAAACCCTGGCATTGTTAGACATCTAATTGATTCGGTCAAGTTGTAATGATGATTTCTTTCCTTTTTATATTGACGACTTTTTTTTTTTCGTGTGTTTTTGTTCTCTTATAACCGAGCTGCTTACTTATTATTATTTCACCTTCTCTTTTTATTTATACTTATAATTATTTATTCTTTACATACTGTTACAAGAAACTCTTTTCTACATTAATTGCATAAAGTGTCAATCAGCACATCCTCTACATCGCTATCAACAACAAATTTGACAAACCTGCCTATATCTTCAGGAACGACTGCTGCATCGCTACCACCACTACTTGTGAAGTCCCTGGAGTTCAATATGCACTGAAATTTACCTAGCCGTCTTACACATGACCATAATCCATCCATGCTATCGCAATATATGATTTTGTGTTCGTTTTTCGTCTTGCGAAAGGCATCCCCAATGGCTTGTTTCA
+PolyaClassifier probability: 0.999999
 ```
 
 At chromosome I, position 42,717 on the reverse strand, a putative polyA site at this location is expected with a classification probability >0.999 from PolyaID.
