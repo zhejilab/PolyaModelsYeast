@@ -1,6 +1,6 @@
 # PolyaModelsYeast
 
-This repository contains the necessary scripts to make predictions using the *S. cerevisiae*-specific models **PolyaClassifier**, **PolyaCleavage**, and **PolyaStrength**, convolutional neural network models that predict the classification, cleavage site distribution, and strength of a polyA site, respectively. We simultaneously developed a *S. pombe*-specific **PolyaClassifier** model. We developed this suite of models to delineate the *cis*-regulatory elements determining polyA site selection and usage in yeast.
+This repository contains the necessary scripts to make predictions using the *S. cerevisiae*-specific models **PolyaClassifier**, **PolyaCleavage**, and **PolyaStrength**, convolutional neural network models that predict the classification, cleavage site distribution, and strength of a polyA site, respectively. We simultaneously developed a *S. pombe*-specific **PolyaClassifier** model. We developed this suite of models to delineate the *cis*-regulatory elements determining polyA site selection and usage in yeast. Because of the large size of the models, we recommend downloading them as a ZIP file, as they may not be properly downloaded during repo cloning.
 
 Contact *zhe.ji (at) northwestern.edu* with any questions.
 
@@ -16,6 +16,20 @@ Contact *zhe.ji (at) northwestern.edu* with any questions.
 - Pandas == 1.1.5
 - pyfaidx == 0.5.9
 - Isolearn
+
+If you encounter issues running the models with these package specifications (see Issues #2 and #3), then please try installing the following package versions using Mamba and then Pip:
+
+- python=3.6
+- tensorflow=2.0.0
+- keras=2.3.1
+- h5py=2.10.0
+- numpy=1.19.1
+- pandas=1.1.5
+- pyfaidx=0.7.2.1
+- isolearn=0.2.1
+
+Versions of `numpy`, `pandas`, and `pyfaidx` are optimally selected by `mamba`. `isolearn` was installed with pip, and the rest with `conda`.
+We would like to thank mauliknshah for bringing this to our attention and providing a solution [here](https://github.com/zhejilab/PolyaModelsHuman/issues/4#issue-2236125910).
 
 ### Usage
 
