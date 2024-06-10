@@ -86,5 +86,5 @@ Sequence: AGCAGGAGAAAGTGACCAACTAGGCGACGTTTCTACATTGTCAAACCCTGGCATTGTTAGACATCTAATT
 PolyaClassifier probability: 0.999999
 ```
 
-At chromosome I, position 42,717 on the reverse strand, a putative polyA site at this location is expected with a classification probability >0.999 from PolyaID.
+At chromosome I, position 42,717 on the reverse strand, a putative polyA site at this location is expected with a classification probability >0.999 from PolyaClassifier.
 
